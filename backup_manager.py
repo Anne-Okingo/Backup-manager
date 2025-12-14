@@ -138,9 +138,8 @@ def list_schedules():
         with open("backup_schedules.txt", "r") as f:
             schedules = f.readlines()
         
-        log_message("Show schedules list:")
+        log_message("Show schedules list")
         for i, schedule in enumerate(schedules):
-            log_message(f"{i}: {schedule.strip()}")
             print(f"{i}: {schedule.strip()}")
     except FileNotFoundError:
         log_message("Error: can't find backup_schedules.txt")
