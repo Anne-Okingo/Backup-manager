@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import sys
 import os
+import subprocess
+import signal
 from datetime import datetime
 
 def log_message(message):
@@ -76,6 +78,29 @@ def delete_schedule(index_str):
         log_message("Error: can't find backup_schedules.txt")
         print("Error: can't find backup_schedules.txt")
 
+def get_service_pid():
+    """Get the PID of the running backup_service.py process"""
+    try:
+        result = subprocess.run(["ps", "-A", "-f"], capture_output=True, text=True)
+        for line in result.stdout.split('\n'):
+            if 'backup_service.py' in line and 'python' in line:
+                parts = line.split()
+                return int(parts[1])  # PID is the second column
+    except:
+        pass
+    return None
+
+def list_backups():
+    """List all backup files in ./backups directory"""
+    try:
+        backup_files = os.listdir("backups")
+        log_message("Show backups list")
+        for backup_file in sorted(backup_files):
+            print(backup_file)
+    except FileNotFoundError:
+        log_message("Error: can't find backups directory")
+        print("Error: can't find backups directory")
+
 def list_schedules():
     """List all backup schedules from backup_schedules.txt"""
     try:
@@ -109,6 +134,12 @@ def main():
             print("Usage: python3 backup_manager.py delete [index]")
             return
         delete_schedule(sys.argv[2])
+    elif command == "backups":
+        list_backups()
+    elif command == "start":
+        start_service()
+    elif command == "stop":
+        stop_service()
     else:
         print(f"Command '{command}' not implemented yet")
         log_message(f"Command '{command}' not implemented yet")
