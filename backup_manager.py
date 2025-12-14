@@ -90,6 +90,21 @@ def get_service_pid():
         pass
     return None
 
+def start_service():
+    """Start the backup service in background"""
+    if get_service_pid():
+        log_message("Error: backup_service already running")
+        print("Error: backup_service already running")
+        return
+    
+    try:
+        subprocess.Popen(["python3", "backup_service.py"], start_new_session=True)
+        log_message("backup_service started")
+        print("backup_service started")
+    except Exception as e:
+        log_message("Error: can't start backup_service")
+        print("Error: can't start backup_service")
+
 def list_backups():
     """List all backup files in ./backups directory"""
     try:
