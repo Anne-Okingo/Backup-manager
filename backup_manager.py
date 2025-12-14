@@ -82,8 +82,9 @@ def list_schedules():
         with open("backup_schedules.txt", "r") as f:
             schedules = f.readlines()
         
-        log_message("Show schedules list")
+        log_message("Show schedules list:")
         for i, schedule in enumerate(schedules):
+            log_message(f"{i}: {schedule.strip()}")
             print(f"{i}: {schedule.strip()}")
     except FileNotFoundError:
         log_message("Error: can't find backup_schedules.txt")
@@ -103,6 +104,11 @@ def main():
             print("Usage: python3 backup_manager.py create [schedule]")
             return
         create_schedule(sys.argv[2])
+    elif command == "delete":
+        if len(sys.argv) < 3:
+            print("Usage: python3 backup_manager.py delete [index]")
+            return
+        delete_schedule(sys.argv[2])
     else:
         print(f"Command '{command}' not implemented yet")
         log_message(f"Command '{command}' not implemented yet")
