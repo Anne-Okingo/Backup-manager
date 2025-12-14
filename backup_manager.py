@@ -44,6 +44,38 @@ def create_schedule(schedule_str):
     log_message(f"New schedule added: {schedule_str}")
     print(f"Schedule added: {schedule_str}")
 
+def delete_schedule(index_str):
+    """Delete a backup schedule by index"""
+    try:
+        index = int(index_str)
+    except ValueError:
+        log_message(f"Error: invalid index: {index_str}")
+        print(f"Error: invalid index: {index_str}")
+        return
+    
+    try:
+        with open("backup_schedules.txt", "r") as f:
+            schedules = f.readlines()
+        
+        if index < 0 or index >= len(schedules):
+            log_message(f"Error: can't find schedule at index {index}")
+            print(f"Error: can't find schedule at index {index}")
+            return
+        
+        # Remove the schedule at the specified index
+        schedules.pop(index)
+        
+        # Write back to file
+        with open("backup_schedules.txt", "w") as f:
+            f.writelines(schedules)
+        
+        log_message(f"Schedule at index {index} deleted")
+        print(f"Schedule at index {index} deleted")
+        
+    except FileNotFoundError:
+        log_message("Error: can't find backup_schedules.txt")
+        print("Error: can't find backup_schedules.txt")
+
 def list_schedules():
     """List all backup schedules from backup_schedules.txt"""
     try:
@@ -71,11 +103,6 @@ def main():
             print("Usage: python3 backup_manager.py create [schedule]")
             return
         create_schedule(sys.argv[2])
-    elif command == "delete":
-        if len(sys.argv) < 3:
-            print("Usage: python3 backup_manager.py delete [index]")
-            return
-        delete_schedule(sys.argv[2])
     else:
         print(f"Command '{command}' not implemented yet")
         log_message(f"Command '{command}' not implemented yet")
