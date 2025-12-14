@@ -105,6 +105,22 @@ def start_service():
         log_message("Error: can't start backup_service")
         print("Error: can't start backup_service")
 
+def stop_service():
+    """Stop the backup service"""
+    pid = get_service_pid()
+    if not pid:
+        log_message("Error: backup_service not running")
+        print("Error: backup_service not running")
+        return
+    
+    try:
+        os.kill(pid, signal.SIGTERM)
+        log_message("backup_service stopped")
+        print("backup_service stopped")
+    except Exception as e:
+        log_message("Error: can't stop backup_service")
+        print("Error: can't stop backup_service")
+
 def list_backups():
     """List all backup files in ./backups directory"""
     try:
