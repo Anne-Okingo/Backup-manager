@@ -1,2 +1,7 @@
 [14/12/2025 13:05] Command received: test
 [14/12/2025 15:35] Command received: test
+[14/12/2025 16:05] Show schedules list
+[14/12/2025 16:07] Error: can't find backup_schedules.txt
+[14/12/2025 16:08] New schedule added: test;16:07;backup_test
+[14/12/2025 16:09] Error: malformed schedule: test;
+[14/12/2025 16:15] Show schedules list
